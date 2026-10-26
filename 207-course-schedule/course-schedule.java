@@ -1,43 +1,38 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < numCourses; i++) {
+        for(int i = 0; i < numCourses; i++){
             graph.add(new ArrayList<>());
         }
-        for (int[] p : prerequisites) {
-            int course = p[0];
-            int prerequisite = p[1];
-
-            graph.get(prerequisite).add(course);
+        for(int[] p: prerequisites){
+            int c = p[0];
+            int pre = p[1];
+            graph.get(pre).add(c);
         }
-        int[] state = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            if (state[i] == 0) {
-                if (!dfs(i, graph, state)) {
+        int[] states = new int[numCourses];
+        for(int i = 0; i < states.length; i++){
+            if(states[i] == 0){
+                if(!dfs(graph, states, i)){
                     return false;
                 }
             }
         }
         return true;
     }
-    private boolean dfs(int course, List<List<Integer>> graph, int[] state) {
-        // Course is already in the current DFS path → cycle
-        if (state[course] == 1) {
+    boolean dfs(List<List<Integer>> graph, int[] states, int i){
+        if(states[i] == 1){
             return false;
         }
-        // Already completely processed
-        if (state[course] == 2) {
+        if(states[i] == 2){
             return true;
         }
-        // Mark as currently visiting
-        state[course] = 1;
-        for (int next : graph.get(course)) {
-            if (!dfs(next, graph, state)) {
+        states[i] = 1;
+        for(int next: graph.get(i)){
+            if(!dfs(graph, states, next)){
                 return false;
             }
         }
-        // Finished processing this course
-        state[course] = 2;
+        states[i] = 2;
         return true;
     }
 }
