@@ -14,25 +14,23 @@ class Solution {
             }
         }
         HashSet<Integer> set = new HashSet<>();
-        for(int i = 0; i < n; i++){
-            set.add(find(parent[i]));
+        for(int p: parent){
+            set.add(find(p));
         }
         return set.size();
+
+    }
+    void union(int x, int y){
+        int px = find(x);
+        int py = find(y);
+        if(px != py){
+            parent[px] = py;
+        }
     }
     int find(int x){
         if(parent[x] != x){
             parent[x] = find(parent[x]);
         }
         return parent[x];
-    }
-    void union(int x, int y){
-        int px = find(x);
-        int py = find(y);
-
-        if(px == py){
-            return;
-        }
-        parent[py] = px;
-        return;
     }
 }
